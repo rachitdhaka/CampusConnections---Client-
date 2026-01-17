@@ -39,10 +39,10 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default  function CompleteInformationPage() {
+export default function CompleteInformationPage() {
   const router = useRouter();
   const { user } = useUser();
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,36 +55,35 @@ export default  function CompleteInformationPage() {
       batch: "",
     },
   });
-  
-  
-
 
   async function onSubmit(data: FormValues) {
-
     const geoCodeResponse = await axios.get(
-      `https://geocode.maps.co/search?q=${data.area}+${data.city}&api_key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}`
+      `https://geocode.maps.co/search?q=${data.area}+${data.city}&api_key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}`,
     );
 
     console.log(geoCodeResponse.data);
 
-    let lat=geoCodeResponse.data[0].lat;
-    let lon=geoCodeResponse.data[0].lon;
+    let lat = geoCodeResponse.data[0].lat;
+    let lon = geoCodeResponse.data[0].lon;
     try {
       const mainData = {
         name: user?.fullName,
         email: user?.primaryEmailAddress?.emailAddress,
         company: data.company,
         role: data.role,
-        area:data.area,
-        city:data.city,
-        lon:lon,
-        lat:lat,
+        area: data.area,
+        city: data.city,
+        lon: lon,
+        lat: lat,
         contact: data.contact,
         batch: data.batch,
         college: data.college,
       };
       console.log(mainData);
-      await axios.post("http://localhost:1000/user/userInformation", mainData);
+      await axios.post(
+        "https://server-campus-connections.onrender.com/user/userInformation",
+        mainData,
+      );
       toast.success("Profile updated successfully");
       setTimeout(() => {
         router.push("/dashboard");
@@ -104,7 +103,11 @@ export default  function CompleteInformationPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form id="profile-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            id="profile-form"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
             <FieldGroup className="grid grid-cols-2 gap-4">
               <Controller
                 name="company"
@@ -113,7 +116,9 @@ export default  function CompleteInformationPage() {
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel>Company</FieldLabel>
                     <Input {...field} placeholder="Company name" />
-                    {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
+                    {fieldState.error && (
+                      <FieldError>{fieldState.error.message}</FieldError>
+                    )}
                   </Field>
                 )}
               />
@@ -124,7 +129,9 @@ export default  function CompleteInformationPage() {
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel>Role</FieldLabel>
                     <Input {...field} placeholder="Your role" />
-                    {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
+                    {fieldState.error && (
+                      <FieldError>{fieldState.error.message}</FieldError>
+                    )}
                   </Field>
                 )}
               />
@@ -138,7 +145,9 @@ export default  function CompleteInformationPage() {
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel>Area</FieldLabel>
                     <Input {...field} placeholder="Area" />
-                    {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
+                    {fieldState.error && (
+                      <FieldError>{fieldState.error.message}</FieldError>
+                    )}
                   </Field>
                 )}
               />
@@ -149,7 +158,9 @@ export default  function CompleteInformationPage() {
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel>City</FieldLabel>
                     <Input {...field} placeholder="City" />
-                    {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
+                    {fieldState.error && (
+                      <FieldError>{fieldState.error.message}</FieldError>
+                    )}
                   </Field>
                 )}
               />
@@ -162,7 +173,9 @@ export default  function CompleteInformationPage() {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Contact</FieldLabel>
                   <Input {...field} placeholder="Contact number" />
-                  {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
+                  {fieldState.error && (
+                    <FieldError>{fieldState.error.message}</FieldError>
+                  )}
                 </Field>
               )}
             />
@@ -175,7 +188,9 @@ export default  function CompleteInformationPage() {
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel>College</FieldLabel>
                     <Input {...field} placeholder="College name" />
-                    {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
+                    {fieldState.error && (
+                      <FieldError>{fieldState.error.message}</FieldError>
+                    )}
                   </Field>
                 )}
               />
@@ -186,7 +201,9 @@ export default  function CompleteInformationPage() {
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel>Batch</FieldLabel>
                     <Input {...field} placeholder="Batch" />
-                    {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
+                    {fieldState.error && (
+                      <FieldError>{fieldState.error.message}</FieldError>
+                    )}
                   </Field>
                 )}
               />

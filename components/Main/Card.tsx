@@ -13,7 +13,7 @@ export default function ProfileCard() {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          "http://localhost:1000/user/dashboard",
+          "https://server-campus-connections.onrender.com/user/dashboard",
         );
         setUserData(response.data);
         console.log(response.data);
@@ -25,7 +25,7 @@ export default function ProfileCard() {
     };
 
     fetchData();
-  }, []); 
+  }, []);
 
   if (isLoading) {
     return (

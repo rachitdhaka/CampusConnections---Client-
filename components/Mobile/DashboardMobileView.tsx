@@ -311,7 +311,10 @@ export default function DashboardMobileView() {
                   Sign In
                 </Button>
               </SignInButton>
-              <SignUpButton mode="modal">
+              <SignUpButton
+                mode="modal"
+                forceRedirectUrl="/CompleteInformation"
+              >
                 <Button
                   variant="outline"
                   className="w-full min-h-[48px] text-base font-medium"

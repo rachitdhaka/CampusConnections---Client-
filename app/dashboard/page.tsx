@@ -67,7 +67,12 @@ export default function Page() {
                     Sign In
                   </Button>
                 </SignInButton>
-                <SignUpButton mode="modal">
+                <SignUpButton
+                  mode="modal"
+                  oauthFlow="popup"
+                  forceRedirectUrl="/CompleteInformation"
+                  fallbackRedirectUrl="/CompleteInformation"
+                >
                   <Button
                     variant="outline"
                     className="w-full py-6 text-base font-medium transition-all duration-200 hover:scale-[1.02]"

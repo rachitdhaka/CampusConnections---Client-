@@ -24,7 +24,7 @@ export default function Sidebar() {
               Login
             </Button>
           </SignInButton>
-          <SignUpButton mode="modal" oauthFlow="popup">
+          <SignUpButton mode="modal" forceRedirectUrl="/CompleteInformation">
             <Button variant="link" size="sm" className="mr-4 cursor-pointer">
               Signup
             </Button>

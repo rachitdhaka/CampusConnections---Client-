@@ -144,7 +144,10 @@ export default function MobileNavbar() {
               <SignInButton mode="modal">
                 <Button className="w-full min-h-[44px]">Sign In</Button>
               </SignInButton>
-              <SignUpButton mode="modal">
+              <SignUpButton
+                mode="modal"
+                forceRedirectUrl="/CompleteInformation"
+              >
                 <Button variant="outline" className="w-full min-h-[44px]">
                   Create Account
                 </Button>

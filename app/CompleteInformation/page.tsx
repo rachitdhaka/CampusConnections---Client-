@@ -108,7 +108,7 @@ export default function CompleteInformationPage() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4"
           >
-            <FieldGroup className="grid grid-cols-2 gap-4">
+            <FieldGroup className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Controller
                 name="company"
                 control={form.control}
@@ -137,7 +137,7 @@ export default function CompleteInformationPage() {
               />
             </FieldGroup>
 
-            <FieldGroup className="grid grid-cols-2 gap-4">
+            <FieldGroup className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Controller
                 name="area"
                 control={form.control}
@@ -180,7 +180,7 @@ export default function CompleteInformationPage() {
               )}
             />
 
-            <FieldGroup className="grid grid-cols-2 gap-4">
+            <FieldGroup className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Controller
                 name="college"
                 control={form.control}
@@ -210,11 +210,20 @@ export default function CompleteInformationPage() {
             </FieldGroup>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
+        <CardFooter className="flex flex-col-reverse sm:flex-row justify-end gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => form.reset()}
+            className="min-h-[44px] w-full sm:w-auto"
+          >
             Reset
           </Button>
-          <Button type="submit" form="profile-form">
+          <Button
+            type="submit"
+            form="profile-form"
+            className="min-h-[44px] w-full sm:w-auto"
+          >
             Submit
           </Button>
         </CardFooter>

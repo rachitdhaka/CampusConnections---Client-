@@ -8,11 +8,11 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
-} from '@clerk/nextjs'
+} from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from "@vercel/analytics/next";
 
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -45,12 +45,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "CampusConnection",
+    images: [
+      {
+        url: "/bg.webp",
+        width: 1200,
+        height: 630,
+        alt: "CampusConnection - Alumni Network Map",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "CampusConnection",
     description:
       "Reconnect with friends after graduation and grow your alumni network.",
+    images: ["/bg.webp"],
   },
 };
 
@@ -73,7 +82,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Analytics />
-            {children} 
+            {children}
             <Toaster richColors />
           </ThemeProvider>
         </body>

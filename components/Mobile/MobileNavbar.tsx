@@ -135,8 +135,7 @@ export default function MobileNavbar() {
         <div className="p-4 space-y-4">
           <SignedIn>
             <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
-              <UserButton />
-              <span className="text-sm font-medium">Your Account</span>
+              <UserButton showName />
             </div>
           </SignedIn>
 
@@ -173,25 +172,6 @@ export default function MobileNavbar() {
                 />
               </svg>
               <span>Dashboard</span>
-            </a>
-            <a
-              href="/CompleteInformation"
-              className="flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-lg hover:bg-muted transition-colors"
-            >
-              <svg
-                className="w-5 h-5 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-              <span>Complete Profile</span>
             </a>
           </nav>
         </div>

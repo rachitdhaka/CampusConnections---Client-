@@ -37,9 +37,9 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
-        
+
           <div className="relative z-40">
-            <AnimatedThemeToggler/>
+            <AnimatedThemeToggler />
           </div>
         </NavBody>
 
@@ -47,10 +47,13 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
         <MobileNav>
           <MobileNavHeader>
             <NavbarLogo />
-            <MobileNavToggle
-              isOpen={isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            />
+            <div className="flex items-center gap-2">
+              <AnimatedThemeToggler />
+              <MobileNavToggle
+                isOpen={isMobileMenuOpen}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              />
+            </div>
           </MobileNavHeader>
 
           <MobileNavMenu

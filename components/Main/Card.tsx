@@ -29,37 +29,50 @@ export default function ProfileCard() {
 
   if (isLoading) {
     return (
-      <div className="w-full h-fit flex flex-col gap-2 p-2 rounded-xl">
-        <div className="text-sm text-muted-foreground">Loading...</div>
+      <div className="w-full h-fit flex flex-col gap-3 p-2 rounded-xl">
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="animate-pulse flex items-center gap-3 p-4 rounded-xl bg-muted/50"
+          >
+            <div className="w-10 h-10 rounded-full bg-muted" />
+            <div className="flex-1 space-y-2">
+              <div className="h-4 bg-muted rounded w-3/4" />
+              <div className="h-3 bg-muted rounded w-1/2" />
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
 
   return (
-    <div className="w-full  h-fit  flex flex-col gap-2  p-2 rounded-xl ">
+    <div className="w-full h-fit flex flex-col gap-2 p-2 rounded-xl">
       {userData &&
         userData.map((user: any, index: number) => (
           <div
             key={index}
-            className="flex flex-col border rounded-xl hover:bg-neutral-200 dark:hover:bg-neutral-800 p-2 gap-2"
+            className="flex flex-col border border-border rounded-xl bg-card hover:bg-muted/50 p-3 gap-2 transition-colors"
           >
             <div className="flex gap-4 justify-start items-center">
-              <div className="size-10 rounded-full overflow-hidden">
+              <div className="size-10 rounded-full overflow-hidden bg-muted">
                 <Image src={user.image || pfp} alt={user.name} />
               </div>
               <div>
-                <p className="font-semibold text-sm">{user.name}</p>
-                <p className="font text-xs text-muted-foreground">
+                <p className="font-semibold text-sm text-foreground">
+                  {user.name}
+                </p>
+                <p className="text-xs text-muted-foreground">
                   {user.role} @ {user.company}
                 </p>
               </div>
             </div>
 
             {/* Bio  */}
-            <div className="flex gap-2">
-              <DisplayTag>{user.city}</DisplayTag>
-              <DisplayTag>{user.batch}</DisplayTag>
-              <DisplayTag>{user.college}</DisplayTag>
+            <div className="flex flex-wrap gap-2">
+              <DisplayTag>📍 {user.city}</DisplayTag>
+              <DisplayTag>🎓 {user.batch}</DisplayTag>
+              <DisplayTag>🏫 {user.college}</DisplayTag>
             </div>
           </div>
         ))}
@@ -75,12 +88,10 @@ export function DisplayTag({
   children?: React.ReactNode;
 }) {
   return (
-    <div>
-      <p
-        className={`bg-neutral-100 dark:bg-neutral-800 w-fit px-2 py-1 rounded-full text-sm ${className}`}
-      >
-        {children}
-      </p>
-    </div>
+    <span
+      className={`bg-muted w-fit px-3 py-1.5 rounded-full text-xs font-medium ${className || ""}`}
+    >
+      {children}
+    </span>
   );
 }

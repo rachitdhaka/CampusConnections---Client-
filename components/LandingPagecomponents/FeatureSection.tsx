@@ -1,48 +1,43 @@
-
 import type React from "react";
 import { GlobeComponent } from "./Globe";
 
-
 export const FeatureSection = () => {
-
-  
-  const feature=[{
-    title: "No Encryption",
-    description: "Standard data transmission without encryption",
-
-    }, {
-    title: "QKD + AES BB84",
-    description: "Quantum Key Distribution with BB84 protocol and AES-256-GCM encryption",
-  
-    }, {
-    title: "Standard AES-256-GCM",
-    description: "Military-grade AES-256-GCM encryption",
-   
-    }, {
-    title: "QRNG + PQC",
-    description: "Quantum Random Number Generation with Post-Quantum Cryptography",
-
-  }]
+  const feature = [
+    {
+      title: "No Encryption",
+      description: "Standard data transmission without encryption",
+    },
+    {
+      title: "QKD + AES BB84",
+      description:
+        "Quantum Key Distribution with BB84 protocol and AES-256-GCM encryption",
+    },
+    {
+      title: "Standard AES-256-GCM",
+      description: "Military-grade AES-256-GCM encryption",
+    },
+    {
+      title: "QRNG + PQC",
+      description:
+        "Quantum Random Number Generation with Post-Quantum Cryptography",
+    },
+  ];
 
   return (
-    <div className="flex border p-8 justify-center items-center mt-20">
+    <div className="flex flex-col md:flex-row border p-4 md:p-8 justify-center items-center mt-10 md:mt-20 gap-6 md:gap-0">
       <div className="flex flex-col justify-center items-center">
         <Heading>Features & Encrutpions</Heading>
-        <p className="text-center text-neutral-500 text-sm max-w-2xl mt-2 leading-relaxed">
-          live, dark-mode visualization of your alumni network. The Radar strips away the noise of standard maps, focusing only on the signal: where your people are.
+        <p className="text-center text-neutral-500 text-xs md:text-sm max-w-2xl mt-2 leading-relaxed px-4">
+          live, dark-mode visualization of your alumni network. The Radar strips
+          away the noise of standard maps, focusing only on the signal: where
+          your people are.
         </p>{" "}
       </div>
 
-      <GlobeComponent/>
-
-     
+      <GlobeComponent />
     </div>
   );
 };
-
-
-
-
 
 export const Heading = ({
   children,
@@ -60,11 +55,18 @@ export const Heading = ({
   );
 };
 
-
-export const Box=({children,className}:{children:React.ReactNode ; className?:String})=>{
+export const Box = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: String;
+}) => {
   return (
-    <div className={`${className} px-10 py-6 flex flex-col justify-center items-center hover:scale-103 hover:shadow-2xl shadow-sky-400/20 duration-200 transition-all `}>
+    <div
+      className={`${className} px-10 py-6 flex flex-col justify-center items-center hover:scale-103 hover:shadow-2xl shadow-sky-400/20 duration-200 transition-all `}
+    >
       {children}
     </div>
-  )
-}
+  );
+};

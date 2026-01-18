@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <>
       {/* Desktop View - visible at md (768px) and above */}
-      <div className="hidden md:flex gap-2 h-screen p-2 bg-neutral-200 dark:bg-neutral-900">
+      <div className="hidden md:flex gap-2 h-screen p-2 bg-background">
         <SignedIn>
           <ClusterMap />
           <ContentSideBar />

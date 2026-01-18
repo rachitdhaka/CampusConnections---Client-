@@ -118,8 +118,8 @@ export default function DashboardMobileView() {
       <SignedIn>
         <MobileNavbar />
 
-        {/* Full-screen Map */}
-        <div className="h-full w-full pt-14">
+        {/* Full-screen Map - pb-20 ensures controls are visible above the floating button */}
+        <div className="h-full w-full pt-14 pb-20">
           <Map center={[78.9629, 20.5937]} zoom={4} fadeDuration={0}>
             <MapClickHandler onMapClick={() => setSelectedPoint(null)} />
 

@@ -313,7 +313,9 @@ export default function DashboardMobileView() {
               </SignInButton>
               <SignUpButton
                 mode="modal"
+                oauthFlow="popup"
                 forceRedirectUrl="/CompleteInformation"
+                fallbackRedirectUrl="/CompleteInformation"
               >
                 <Button
                   variant="outline"

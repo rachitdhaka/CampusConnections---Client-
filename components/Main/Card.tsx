@@ -1,5 +1,5 @@
 "use client";
-import pfp from "@/public/dp.png";
+import pfp from "@/public/user.png";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";

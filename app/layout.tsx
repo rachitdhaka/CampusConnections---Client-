@@ -10,6 +10,8 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from '@vercel/analytics/next';
+
 import { Toaster } from "@/components/ui/sonner"
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -70,7 +72,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            
+            <Analytics />
             {children} 
             <Toaster richColors />
           </ThemeProvider>

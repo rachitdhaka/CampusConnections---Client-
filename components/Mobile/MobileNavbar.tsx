@@ -141,17 +141,17 @@ export default function MobileNavbar() {
 
           <SignedOut>
             <div className="space-y-3">
-              <SignInButton mode="modal">
-                <Button className="w-full min-h-[44px]">Sign In</Button>
-              </SignInButton>
-              <SignUpButton
-                mode="modal"
-                forceRedirectUrl="/CompleteInformation"
+              <button >
+                <a href="/sign-in"><Button className="w-full min-h-[44px]">Sign In</Button></a>
+              </button>
+              <button
+                
+                
               >
-                <Button variant="outline" className="w-full min-h-[44px]">
+                <a href="/sign-up"><Button variant="outline" className="w-full min-h-[44px]">
                   Create Account
-                </Button>
-              </SignUpButton>
+                </Button></a>
+              </button>
             </div>
           </SignedOut>
 

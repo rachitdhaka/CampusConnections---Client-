@@ -123,7 +123,7 @@ export default function ClusterMap() {
   }, [usersData]);
 
   return (
-    <div className="h-full w-full rounded-xl overflow-hidden">
+    <div className="relative h-full w-full rounded-xl overflow-hidden">
       <Sidebar />
       <Map center={[78.9629, 20.5937]} zoom={4} fadeDuration={0}>
         <MapClickHandler onMapClick={() => setSelectedPoint(null)} />

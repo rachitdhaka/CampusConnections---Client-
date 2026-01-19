@@ -2,7 +2,7 @@ import { Globe } from "@/components/ui/globe";
 
 export function GlobeComponent() {
   return (
-    <div className="bg-background relative flex size-full max-w-lg items-center justify-center overflow-hidden rounded-lg border px-10 md:px-40 pt-8 pb-40 md:pb-60">
+    <div className="bg-background relative flex w-full max-w-lg items-center justify-center overflow-hidden rounded-lg border px-6 md:px-40 pt-8 pb-32 md:pb-60">
       <span className="font-serif pointer-events-none bg-gradient-to-b tracking-tight from-black to-gray-300/80 bg-clip-text text-center text-4xl md:text-8xl whitespace-pre-wrap text-transparent dark:from-white dark:to-slate-900/10">
         Connect
       </span>

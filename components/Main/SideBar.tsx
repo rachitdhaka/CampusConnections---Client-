@@ -19,7 +19,7 @@ const navlinks = [
   },
   {
     name: "Profile",
-    href: "/profile",
+    href: "/Profile",
   },
 ];
 

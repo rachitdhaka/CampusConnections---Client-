@@ -19,16 +19,14 @@ export default function Sidebar() {
         </SignedIn>
 
         <SignedOut>
-          <SignInButton mode="modal" oauthFlow="popup">
-            <Button size="sm" variant="link" className="cursor-pointer">
-              Login
-            </Button>
-          </SignInButton>
-          <SignUpButton mode="modal" forceRedirectUrl="/CompleteInformation">
-            <Button variant="link" size="sm" className="mr-4 cursor-pointer">
-              Signup
-            </Button>
-          </SignUpButton>
+          <div className="flex justify-end items-center gap-2 backdrop-blur-sm   w-fit p-1 rounded-full px-2 border border-neutral-200 dark:border-neutral-700 ">
+            <button className="p-1 px-2 border border-neutral-200/50 rounded-full hover:scale-105 duration-300 hover:bg-neutral-100 dark:hover:bg-neutral-800  dark:border-neutral-800">
+              Sign In
+            </button>
+            <button className="p-1 px-2 border border-neutral-200/50 rounded-full hover:scale-105 duration-300 hover:bg-neutral-100 dark:hover:bg-neutral-800  dark:border-neutral-800">
+              Sign Up
+            </button>
+          </div>
         </SignedOut>
       </div>
 

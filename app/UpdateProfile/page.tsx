@@ -9,6 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import {
+  ArrowLeft,
   Loader2,
   Save,
   User,
@@ -17,8 +18,8 @@ import {
   Phone,
   GraduationCap,
   Building2,
-  Sparkles,
 } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -49,10 +50,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function CompleteInformationPage() {
+export default function UpdateProfilePage() {
   const router = useRouter();
   const { user, isLoaded } = useUser();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -66,6 +68,42 @@ export default function CompleteInformationPage() {
       batch: "",
     },
   });
+
+  // Fetch existing user data
+  React.useEffect(() => {
+    async function fetchUserData() {
+      if (!user?.primaryEmailAddress?.emailAddress) return;
+
+      try {
+        const response = await axios.get(
+          `https://server-campus-connections.onrender.com/user/profile/${user.primaryEmailAddress.emailAddress}`,
+        );
+
+        if (response.data) {
+          const userData = response.data;
+          form.reset({
+            company: userData.company || "",
+            role: userData.role || "",
+            area: userData.area || "",
+            city: userData.city || "",
+            contact: userData.contact || "",
+            college: userData.college || "",
+            batch: userData.batch || "",
+          });
+        }
+      } catch (error) {
+        console.log("No existing profile found or error fetching:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (isLoaded && user) {
+      fetchUserData();
+    } else if (isLoaded && !user) {
+      setIsLoading(false);
+    }
+  }, [isLoaded, user, form]);
 
   async function onSubmit(data: FormValues) {
     setIsSubmitting(true);
@@ -85,8 +123,7 @@ export default function CompleteInformationPage() {
         return;
       }
 
-      const mainData = {
-        name: user?.fullName,
+      const updateData = {
         email: user?.primaryEmailAddress?.emailAddress,
         company: data.company,
         role: data.role,
@@ -99,24 +136,25 @@ export default function CompleteInformationPage() {
         college: data.college,
       };
 
-      await axios.post(
-        "https://server-campus-connections.onrender.com/user/userInformation",
-        mainData,
+      await axios.put(
+        "https://server-campus-connections.onrender.com/user/update",
+        updateData,
       );
-      toast.success("Profile created successfully!");
+
+      toast.success("Profile updated successfully!");
       router.push("/dashboard");
     } catch (error) {
-      toast.error("Failed to create profile. Please try again.");
+      toast.error("Failed to update profile. Please try again.");
       setIsSubmitting(false);
     }
   }
 
-  if (!isLoaded) {
+  if (!isLoaded || isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">Loading your profile...</p>
         </div>
       </div>
     );
@@ -129,11 +167,13 @@ export default function CompleteInformationPage() {
           <CardHeader className="text-center">
             <CardTitle>Not Signed In</CardTitle>
             <CardDescription>
-              Please sign in to complete your profile.
+              Please sign in to update your profile.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <Button onClick={() => router.push("/login")}>Sign In</Button>
+            <Button asChild>
+              <Link href="/login">Sign In</Link>
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -142,11 +182,22 @@ export default function CompleteInformationPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-end items-center backdrop-blur-sm   w-fit p-2 rounded-full border border-neutral-200 dark:border-neutral-700 ">
-        <AnimatedThemeToggler />
-      </div>
       {/* Header Section */}
+      <div className="flex justify-end items-center backdrop-blur-sm   w-fit p-2 rounded-full border border-neutral-200 dark:border-neutral-700 ">
+        <AnimatedThemeToggler />    
+      </div>
       <div className="max-w-4xl mx-auto mb-8">
+        <Button
+          variant="ghost"
+          asChild
+          className="mb-4 hover:bg-accent/50 -ml-2"
+        >
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Dashboard
+          </Link>
+        </Button>
+
         <div className="flex items-center gap-4 mb-2">
           <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/10">
             {user.imageUrl ? (
@@ -160,13 +211,11 @@ export default function CompleteInformationPage() {
             )}
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-                Complete Your Profile
-              </h1>
-            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+              Update Your Profile
+            </h1>
             <p className="text-muted-foreground">
-              Welcome, {user.fullName}! Let's set up your profile.
+              {user.fullName} • {user.primaryEmailAddress?.emailAddress}
             </p>
           </div>
         </div>
@@ -180,7 +229,7 @@ export default function CompleteInformationPage() {
             Profile Information
           </CardTitle>
           <CardDescription>
-            Fill in your details to help others connect with you on the network.
+            Update your professional details to help others connect with you.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
@@ -361,11 +410,20 @@ export default function CompleteInformationPage() {
               <Button
                 type="button"
                 variant="outline"
+                onClick={() => router.push("/dashboard")}
+                className="min-h-[44px] w-full sm:w-auto"
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
                 onClick={() => form.reset()}
                 className="min-h-[44px] w-full sm:w-auto"
                 disabled={isSubmitting}
               >
-                Reset Form
+                Reset Changes
               </Button>
               <Button
                 type="submit"
@@ -376,12 +434,12 @@ export default function CompleteInformationPage() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Creating Profile...
+                    Saving...
                   </>
                 ) : (
                   <>
                     <Save className="h-4 w-4" />
-                    Complete Setup
+                    Save Changes
                   </>
                 )}
               </Button>

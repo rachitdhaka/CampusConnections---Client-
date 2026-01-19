@@ -46,7 +46,7 @@ interface UserData {
 interface PlaceProperties {
   id: string;
   location: string;
-  users: { name: string; company: string }[];
+  users: { name: string; batch: string }[];
 }
 
 export default function ClusterMap() {
@@ -76,35 +76,46 @@ export default function ClusterMap() {
     fetchUsers();
   }, []);
 
-  // Group users by area and convert to GeoJSON
+  // Group users by exact coordinates and convert to GeoJSON
   const placesGeoJSON = useMemo(() => {
-    // Group users by area
+    // Group users by exact lat/lon coordinates to handle people at the same location
     const grouped = usersData.reduce<
       Record<
         string,
-        { users: { name: string; company: string }[]; lat: number; lon: number }
+        {
+          users: { name: string; batch: string }[];
+          lat: number;
+          lon: number;
+          location: string;
+        }
       >
     >((acc, user) => {
-      const key = `${user.area}, ${user.city}`;
+      // Use coordinates as the key to group users at the exact same location
+      const key = `${user.lat},${user.lon}`;
       if (!acc[key]) {
-        acc[key] = { users: [], lat: user.lat, lon: user.lon };
+        acc[key] = {
+          users: [],
+          lat: user.lat,
+          lon: user.lon,
+          location: `${user.area}, ${user.city}`,
+        };
       }
-      acc[key].users.push({ name: user.name, company: user.company });
+      acc[key].users.push({ name: user.name, batch: user.batch });
       return acc;
     }, {});
 
     // Convert to GeoJSON FeatureCollection
     return {
       type: "FeatureCollection" as const,
-      features: Object.entries(grouped).map(([location, data]) => ({
+      features: Object.entries(grouped).map(([coordKey, data]) => ({
         type: "Feature" as const,
         geometry: {
           type: "Point" as const,
           coordinates: [data.lon, data.lat] as [number, number],
         },
         properties: {
-          id: location,
-          location,
+          id: coordKey,
+          location: data.location,
           users: data.users,
         },
       })),
@@ -147,23 +158,19 @@ export default function ClusterMap() {
               </p>
               <div className="space-y-2 text-sm">
                 {(() => {
-                  // Parse users if it's a string (MapClusterLayer serializes arrays)
                   const users =
                     typeof selectedPoint.properties.users === "string"
                       ? JSON.parse(selectedPoint.properties.users)
                       : selectedPoint.properties.users;
                   return users.map(
-                    (
-                      user: { name: string; company: string },
-                      index: number,
-                    ) => (
+                    (user: { name: string; batch: string }, index: number) => (
                       <div key={index} className="flex items-center gap-2">
                         <span className="text-muted-foreground">👤</span>
                         <span>
                           <span className="font-medium">{user.name}</span>
                           <span className="text-muted-foreground">
                             {" "}
-                            @ {user.company}
+                            • Batch {user.batch}
                           </span>
                         </span>
                       </div>

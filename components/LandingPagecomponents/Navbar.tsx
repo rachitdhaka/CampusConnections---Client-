@@ -1,95 +1,18 @@
 "use client";
+
 import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
-import {
-  Navbar,
-  NavBody,
-  NavItems,
-  MobileNav,
-  NavbarLogo,
-  NavbarButton,
-  MobileNavHeader,
-  MobileNavToggle,
-  MobileNavMenu,
-} from "./ui/resizable-navbar";
-import { useState } from "react";
 
-export function NavbarDemo({ children }: { children: React.ReactNode }) {
-  const navItems = [
-    {
-      name: "Features",
-      link: "#features",
-    },
-    {
-      name: "Pricing",
-      link: "#pricing",
-    },
-    {
-      name: "Contact",
-      link: "#contact",
-    },
-  ];
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  return (
-    <div className="relative w-full">
-      <Navbar>
-        {/* Desktop Navigation */}
-        <NavBody>
-          <NavbarLogo />
-
-          <div className="relative z-40">
-            <AnimatedThemeToggler />
-          </div>
-        </NavBody>
-
-        {/* Mobile Navigation */}
-        <MobileNav>
-          <MobileNavHeader>
-            <NavbarLogo />
-            <div className="flex items-center gap-2">
-              <AnimatedThemeToggler />
-              <MobileNavToggle
-                isOpen={isMobileMenuOpen}
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              />
-            </div>
-          </MobileNavHeader>
-
-          <MobileNavMenu
-            isOpen={isMobileMenuOpen}
-            onClose={() => setIsMobileMenuOpen(false)}
-          >
-            {navItems.map((item, idx) => (
-              <a
-                key={`mobile-link-${idx}`}
-                href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
-              >
-                <span className="block">{item.name}</span>
-              </a>
-            ))}
-            <div className="flex w-full flex-col gap-4">
-              <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="primary"
-                className="w-full"
-              >
-                Login
-              </NavbarButton>
-              <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="primary"
-                className="w-full"
-              >
-                Book a call
-              </NavbarButton>
-            </div>
-          </MobileNavMenu>
-        </MobileNav>
-      </Navbar>
-      {children}
+export default function Navbar(){
+  return(
+    <div className="fixed flex justify-between items-center top-10 z-10 inset-x-0 mx-auto w-2xl px-4 py-4 rounded-xl ">
+      <div className="flex justify-end items-center gap-2 backdrop-blur-sm   w-fit p-1 rounded-full px-2 border border-neutral-200 dark:border-neutral-700 ">
+        <button className="p-1 px-2 border border-neutral-200/50 rounded-full hover:scale-105 duration-300 hover:bg-neutral-100 dark:hover:bg-neutral-800  dark:border-neutral-800"><a href="/login">Sign In</a></button>
+        <button className="p-1 px-2 border border-neutral-200/50 rounded-full hover:scale-105 duration-300 hover:bg-neutral-100 dark:hover:bg-neutral-800  dark:border-neutral-800"><a href="/NewUser">Sign Up</a></button>
+      </div>
+      <div className="flex justify-end items-center backdrop-blur-sm   w-fit p-2 rounded-full border border-neutral-200 dark:border-neutral-700 ">
+        <AnimatedThemeToggler />
+      </div>
     </div>
-  );
+  )
 }

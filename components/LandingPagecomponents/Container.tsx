@@ -6,13 +6,15 @@ export const Container = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={
-        className ||
-        "max-w-5xl mx-auto my-10 md:my-20 min-h-screen px-4 md:px-0"
-      }
-    >
-      {children}
+    <div>
+      <div
+        className={
+          className || " w-5xl   h-fit px-4  md:px-10 md:gap-10"
+        }
+      >
+        {children}
+      </div>
+      
     </div>
   );
 };

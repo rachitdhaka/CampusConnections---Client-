@@ -1,30 +1,13 @@
 import type React from "react";
 import { GlobeComponent } from "./Globe";
+import { Container } from "./Container";
 
 export const FeatureSection = () => {
-  const feature = [
-    {
-      title: "No Encryption",
-      description: "Standard data transmission without encryption",
-    },
-    {
-      title: "QKD + AES BB84",
-      description:
-        "Quantum Key Distribution with BB84 protocol and AES-256-GCM encryption",
-    },
-    {
-      title: "Standard AES-256-GCM",
-      description: "Military-grade AES-256-GCM encryption",
-    },
-    {
-      title: "QRNG + PQC",
-      description:
-        "Quantum Random Number Generation with Post-Quantum Cryptography",
-    },
-  ];
+  
 
   return (
-    <div className="flex flex-col md:flex-row border p-4 md:p-8 justify-center items-center mt-10 md:mt-20 gap-6 md:gap-0">
+    <Container>
+      <div className="flex flex-col md:flex-row border p-4 md:p-8 justify-center items-center mt-10 md:mt-20 gap-6 md:gap-0">
       <div className="flex flex-col justify-center items-center">
         <Heading>Features & Encrutpions</Heading>
         <p className="text-center text-neutral-500 text-xs md:text-sm max-w-2xl mt-2 leading-relaxed px-4">
@@ -36,6 +19,7 @@ export const FeatureSection = () => {
 
       <GlobeComponent />
     </div>
+    </Container>
   );
 };
 

@@ -121,16 +121,32 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-  .maplibregl-popup-content {
-    @apply bg-transparent! shadow-none! p-0! rounded-none!;
-  }
-  .maplibregl-popup-tip {
-    @apply hidden!;
+    font-family: var(--font-inter), sans-serif;
   }
 }
 
-::view-transition-old(root), ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
+/* Instrument Serif utility classes */
+.font-serif {
+  font-family: var(--font-instrument-serif), serif;
+  font-weight: 400;
+}
+
+.font-serif-italic {
+  font-family: var(--font-instrument-serif), serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.maplibregl-popup-content {
+  @apply bg-transparent! shadow-none! p-0! rounded-none!;
+}
+
+.maplibregl-popup-tip {
+  @apply hidden!;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }

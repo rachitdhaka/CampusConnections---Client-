@@ -1,12 +1,16 @@
 "use client";
 import { SignUp } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-
+import { Globe } from "@/components/ui/globe";
 export default function SignupPage() {
-  const router = useRouter();
+  
   return (
-    <div className="flex justify-center items-center h-screen p-4">
-      <SignUp afterSignUpUrl="/CompleteInformation" />
-    </div>
+    <div className=" relative flex justify-center  h-screen items-center" >
+          <div className="">
+            <Globe  />
+          </div>
+          <div className="relative top-20">
+            <SignUp/>
+          </div>
+        </div>
   );
 }

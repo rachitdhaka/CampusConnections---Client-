@@ -141,16 +141,17 @@ export default function MobileNavbar() {
 
           <SignedOut>
             <div className="space-y-3">
-              <button >
-                <a href="/sign-in"><Button className="w-full min-h-[44px]">Sign In</Button></a>
+              <button>
+                <a href="/sign-in">
+                  <Button className="w-full min-h-[44px]">Sign In</Button>
+                </a>
               </button>
-              <button
-                
-                
-              >
-                <a href="/sign-up"><Button variant="outline" className="w-full min-h-[44px]">
-                  Create Account
-                </Button></a>
+              <button>
+                <a href="/sign-up">
+                  <Button variant="outline" className="w-full min-h-[44px]">
+                    Create Account
+                  </Button>
+                </a>
               </button>
             </div>
           </SignedOut>
@@ -185,15 +186,40 @@ export default function MobileNavbar() {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20a8 8 0 018-8h0a8 8 0 018 8M19 8v4m0 0l-2-2m2 2l2-2"
                 />
               </svg>
+
               <span>Update Profile</span>
+            </a>
+            <a
+              href="/Profile"
+              className="flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-lg hover:bg-muted transition-colors"
+            >
+              <svg
+                className="w-5 h-5 text-muted-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20a8 8 0 0116 0"
+                />
+              </svg>
+
+              <span>Profile</span>
             </a>
           </nav>
         </div>

@@ -80,33 +80,46 @@ export default function DashboardMobileView() {
     fetchUsers();
   }, []);
 
-  // Group users by area and convert to GeoJSON
+  // Group users by exact coordinates and convert to GeoJSON
   const placesGeoJSON = useMemo(() => {
+    // Group users by exact lat/lon coordinates to handle people at the same location
     const grouped = usersData.reduce<
       Record<
         string,
-        { users: { name: string; company: string }[]; lat: number; lon: number }
+        {
+          users: { name: string; company: string }[];
+          lat: number;
+          lon: number;
+          location: string;
+        }
       >
     >((acc, user) => {
-      const key = `${user.area}, ${user.city}`;
+      // Use coordinates as the key to group users at the exact same location
+      const key = `${user.lat},${user.lon}`;
       if (!acc[key]) {
-        acc[key] = { users: [], lat: user.lat, lon: user.lon };
+        acc[key] = {
+          users: [],
+          lat: user.lat,
+          lon: user.lon,
+          location: `${user.area}, ${user.city}`,
+        };
       }
       acc[key].users.push({ name: user.name, company: user.company });
       return acc;
     }, {});
 
+    // Convert to GeoJSON FeatureCollection
     return {
       type: "FeatureCollection" as const,
-      features: Object.entries(grouped).map(([location, data]) => ({
+      features: Object.entries(grouped).map(([coordKey, data]) => ({
         type: "Feature" as const,
         geometry: {
           type: "Point" as const,
           coordinates: [data.lon, data.lat] as [number, number],
         },
         properties: {
-          id: location,
-          location,
+          id: coordKey,
+          location: data.location,
           users: data.users,
         },
       })),
@@ -266,9 +279,6 @@ export default function DashboardMobileView() {
 
           {/* Main card */}
           <div className="relative z-10 flex flex-col gap-5 bg-card backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-border w-full max-w-sm">
-            
-            
-
             {/* Text content */}
             <div className="flex flex-col gap-2 text-center">
               <h1 className="text-2xl font-bold text-foreground">

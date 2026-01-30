@@ -17,7 +17,7 @@ import {
 import Image from "next/image";
 import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import bg from "@/public/bg.webp";
+import bgDark from "@/public/bgDark.webp";
 import bgLight from "@/public/bgLight.webp";
 import { Globe } from "@/components/ui/globe";
 
@@ -278,7 +278,7 @@ const ScreenshotSection = () => {
           <div className="relative mx-auto max-w-5xl overflow-hidden rounded-xl md:rounded-2xl border border-neutral-200/50 dark:border-neutral-800/50 p-2 md:p-4 shadow-2xl shadow-neutral-900/10 dark:shadow-black/30 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm">
             <Image
               className="aspect-[15/8] relative hidden rounded-lg md:rounded-xl dark:block w-full h-auto"
-              src={bg}
+              src={bgDark}
               alt="Orbit map dashboard"
               width={2700}
               height={1440}

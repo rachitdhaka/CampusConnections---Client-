@@ -171,7 +171,7 @@ const HeroSection = () => {
           animate="visible"
         >
           {/* Badge */}
-          <motion.div variants={fadeInUp} className="mb-8">
+          <motion.div  className="mb-8">
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium bg-neutral-100 dark:bg-neutral-800/80 text-neutral-600 dark:text-neutral-300 border border-neutral-200/50 dark:border-neutral-700/50">
               <Sparkles className="w-3.5 h-3.5 text-chart-5" />
               The signal for the scattered
@@ -180,7 +180,7 @@ const HeroSection = () => {
 
           {/* Main headline */}
           <motion.h1
-            variants={fadeInUp}
+            
             className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white leading-[1.1] mb-6"
           >
             <span className="bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-3xl sm:text-5xl md:text-6xl lg:text-8xl tracking-tighter font-bold whitespace-pre-wrap text-transparent dark:from-white dark:to-slate-900/10 block font-serif ">
@@ -190,7 +190,7 @@ const HeroSection = () => {
 
           {/* Subheadline */}
           <motion.p
-            variants={fadeInUp}
+            
             className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed"
           >
             Orbit replaces the noise of social feeds with a{" "}
@@ -203,7 +203,7 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <motion.div
-            variants={fadeInUp}
+            
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <a
@@ -224,7 +224,7 @@ const HeroSection = () => {
 
           {/* Stats */}
           <motion.div
-            variants={fadeInUp}
+            
             className="flex flex-wrap justify-center gap-8 md:gap-12 mt-16 pt-8 border-t border-neutral-200/50 dark:border-neutral-800/50"
           >
             {stats.map((stat) => (
@@ -326,7 +326,7 @@ const FeaturesSection = () => {
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              variants={scaleIn}
+             
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}

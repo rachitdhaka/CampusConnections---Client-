@@ -79,9 +79,9 @@ const features = [
 ];
 
 const stats = [
-  { value: "10K+", label: "Alumni Connected" },
-  { value: "150+", label: "Cities Mapped" },
-  { value: "50+", label: "Campuses" },
+  { value: "10+", label: "Alumni Connected" },
+  { value: "5+", label: "Cities Mapped" },
+ 
 ];
 
 // ============================================================================

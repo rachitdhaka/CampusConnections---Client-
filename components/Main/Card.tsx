@@ -3,10 +3,34 @@ import pfp from "@/public/user.png";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PersonProfileModal from "./PersonProfileModal";
+
+interface Person {
+  name: string;
+  role: string;
+  company: string;
+  city: string;
+  batch: string;
+  college: string;
+  image?: string;
+}
 
 export default function ProfileCard() {
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<Person[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCardClick = (user: Person) => {
+    setSelectedPerson(user);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    // Delay clearing selected person for exit animation
+    setTimeout(() => setSelectedPerson(null), 200);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +42,7 @@ export default function ProfileCard() {
         setUserData(response.data);
         console.log(response.data);
       } catch (error) {
-        setUserData({ error: "Failed to fetch data" });
+        setUserData(null);
       } finally {
         setIsLoading(false);
       }
@@ -47,36 +71,46 @@ export default function ProfileCard() {
   }
 
   return (
-    <div className="w-full h-fit flex flex-col gap-2 p-2 rounded-xl">
-      {userData &&
-        userData.map((user: any, index: number) => (
-          <div
-            key={index}
-            className="flex flex-col border border-border rounded-xl bg-card hover:bg-muted/50 p-3 gap-2 transition-colors"
-          >
-            <div className="flex gap-4 justify-start items-center">
-              <div className="size-10 rounded-full overflow-hidden bg-muted">
-                <Image src={user.image || pfp} alt={user.name} />
+    <>
+      <div className="w-full h-fit flex flex-col gap-2 p-2 rounded-xl">
+        {userData &&
+          userData.map((user: Person, index: number) => (
+            <div
+              key={index}
+              onClick={() => handleCardClick(user)}
+              className="flex flex-col border border-border rounded-xl bg-card hover:bg-muted/50 p-3 gap-2 transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+            >
+              <div className="flex gap-4 justify-start items-center">
+                <div className="size-10 rounded-full overflow-hidden bg-muted">
+                  <Image src={user.image || pfp} alt={user.name} />
+                </div>
+                <div>
+                  <p className="font-semibold text-sm text-foreground">
+                    {user.name}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {user.role} @ {user.company}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-sm text-foreground">
-                  {user.name}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {user.role} @ {user.company}
-                </p>
-              </div>
-            </div>
 
-            {/* Bio  */}
-            <div className="flex flex-wrap gap-2">
-              <DisplayTag>📍 {user.city}</DisplayTag>
-              <DisplayTag>🎓 {user.batch}</DisplayTag>
-              <DisplayTag>🏫 {user.college}</DisplayTag>
+              {/* Bio  */}
+              <div className="flex flex-wrap gap-2">
+                <DisplayTag>📍 {user.city}</DisplayTag>
+                <DisplayTag>🎓 {user.batch}</DisplayTag>
+                <DisplayTag>🏫 {user.college}</DisplayTag>
+              </div>
             </div>
-          </div>
-        ))}
-    </div>
+          ))}
+      </div>
+
+      {/* Person Profile Modal */}
+      <PersonProfileModal
+        person={selectedPerson}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 }
 

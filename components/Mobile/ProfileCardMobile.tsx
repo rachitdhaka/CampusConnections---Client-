@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import pfp from "@/public/user.png";
 import Image from "next/image";
+import PersonProfileModal from "@/components/Main/PersonProfileModal";
 
 interface UserData {
   _id?: string;
@@ -24,6 +26,20 @@ export default function ProfileCardMobile({
   userData,
   isLoading,
 }: ProfileCardMobileProps) {
+  const [selectedPerson, setSelectedPerson] = useState<UserData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCardClick = (user: UserData) => {
+    setSelectedPerson(user);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    // Delay clearing selected person for exit animation
+    setTimeout(() => setSelectedPerson(null), 200);
+  };
+
   if (isLoading) {
     return (
       <div className="flex flex-col gap-3">
@@ -65,45 +81,55 @@ export default function ProfileCardMobile({
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {userData.map((user, index) => (
-        <div
-          key={user._id || index}
-          className="flex flex-col gap-3 p-4 rounded-xl border bg-card hover:bg-muted/50 active:scale-[0.98] transition-all"
-        >
-          {/* User Info Row */}
-          <div className="flex gap-3 items-center">
-            <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-muted">
-              <Image
-                src={user.image || pfp}
-                alt={user.name}
-                width={48}
-                height={48}
-                className="w-full h-full object-cover"
-              />
+    <>
+      <div className="flex flex-col gap-3">
+        {userData.map((user, index) => (
+          <div
+            key={user._id || index}
+            onClick={() => handleCardClick(user)}
+            className="flex flex-col gap-3 p-4 rounded-xl border bg-card hover:bg-muted/50 active:scale-[0.98] transition-all cursor-pointer"
+          >
+            {/* User Info Row */}
+            <div className="flex gap-3 items-center">
+              <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-muted">
+                <Image
+                  src={user.image || pfp}
+                  alt={user.name}
+                  width={48}
+                  height={48}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-base truncate">{user.name}</p>
+                <p className="text-sm text-muted-foreground truncate">
+                  {user.role} @ {user.company}
+                </p>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-base truncate">{user.name}</p>
-              <p className="text-sm text-muted-foreground truncate">
-                {user.role} @ {user.company}
-              </p>
-            </div>
-          </div>
 
-          {/* Tags Row */}
-          <div className="flex flex-wrap gap-2">
-            <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted">
-              📍 {user.city}
-            </span>
-            <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted">
-              🎓 {user.batch}
-            </span>
-            <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted truncate max-w-[150px]">
-              🏫 {user.college}
-            </span>
+            {/* Tags Row */}
+            <div className="flex flex-wrap gap-2">
+              <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted">
+                📍 {user.city}
+              </span>
+              <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted">
+                🎓 {user.batch}
+              </span>
+              <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted truncate max-w-[150px]">
+                🏫 {user.college}
+              </span>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      {/* Person Profile Modal */}
+      <PersonProfileModal
+        person={selectedPerson}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 }

@@ -13,6 +13,8 @@ interface Person {
   batch: string;
   college: string;
   image?: string;
+  email?: string;
+  contact?: string;
 }
 
 export default function ProfileCard() {

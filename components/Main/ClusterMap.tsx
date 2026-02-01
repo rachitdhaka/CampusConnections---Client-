@@ -9,7 +9,6 @@ import {
   MapControls,
   useMap,
 } from "@/components/ui/map";
-import Sidebar from "./SideBar";
 
 // to remove the popup on map click
 function MapClickHandler({ onMapClick }: { onMapClick: () => void }) {
@@ -117,6 +116,7 @@ export default function ClusterMap() {
           id: coordKey,
           location: data.location,
           users: data.users,
+          userCount: data.users.length,
         },
       })),
     };
@@ -124,7 +124,6 @@ export default function ClusterMap() {
 
   return (
     <div className="relative h-full w-full rounded-xl overflow-hidden">
-      <Sidebar />
       <Map center={[78.9629, 20.5937]} zoom={4} fadeDuration={0}>
         <MapClickHandler onMapClick={() => setSelectedPoint(null)} />
 

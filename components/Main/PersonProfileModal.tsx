@@ -3,7 +3,15 @@
 import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
-import { X, MapPin, GraduationCap, Building2, Briefcase } from "lucide-react";
+import {
+  X,
+  MapPin,
+  GraduationCap,
+  Building2,
+  Briefcase,
+  Mail,
+  Phone,
+} from "lucide-react";
 import pfp from "@/public/user.png";
 
 interface Person {
@@ -15,6 +23,7 @@ interface Person {
   college: string;
   image?: string;
   email?: string;
+  contact?: string;
   linkedin?: string;
 }
 
@@ -144,6 +153,22 @@ export default function PersonProfileModal({
                   label="College"
                   value={person.college}
                 />
+                {person.email && (
+                  <InfoRow
+                    icon={<Mail size={16} />}
+                    label="Email"
+                    value={person.email}
+                    href={`mailto:${person.email}`}
+                  />
+                )}
+                {person.contact && (
+                  <InfoRow
+                    icon={<Phone size={16} />}
+                    label="Contact"
+                    value={person.contact}
+                    href={`tel:${person.contact}`}
+                  />
+                )}
               </div>
 
               {/* Tags Section */}
@@ -164,13 +189,15 @@ function InfoRow({
   icon,
   label,
   value,
+  href,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
+  href?: string;
 }) {
-  return (
-    <div className="flex items-center gap-3">
+  const content = (
+    <>
       <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
         {icon}
       </div>
@@ -178,8 +205,23 @@ function InfoRow({
         <p className="text-xs text-muted-foreground">{label}</p>
         <p className="truncate text-sm font-medium text-foreground">{value}</p>
       </div>
-    </div>
+    </>
   );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className="flex items-center gap-3 rounded-lg p-1 -m-1 transition-colors hover:bg-muted/50"
+        target={href.startsWith("mailto:") ? undefined : "_blank"}
+        rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return <div className="flex items-center gap-3">{content}</div>;
 }
 
 function Tag({ children }: { children: React.ReactNode }) {

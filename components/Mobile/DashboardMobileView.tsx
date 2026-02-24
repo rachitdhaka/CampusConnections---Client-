@@ -121,6 +121,7 @@ export default function DashboardMobileView() {
           id: coordKey,
           location: data.location,
           users: data.users,
+          userCount: data.users.length,
         },
       })),
     };

@@ -21,9 +21,7 @@ import bgDark from "@/public/bgDark.webp";
 import bgLight from "@/public/bgLight.webp";
 import { Globe } from "@/components/ui/globe";
 
-// ============================================================================
-// ANIMATION VARIANTS
-// ============================================================================
+
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -47,9 +45,6 @@ const scaleIn = {
   },
 };
 
-// ============================================================================
-// DATA
-// ============================================================================
 
 const features = [
   {
@@ -84,9 +79,6 @@ const stats = [
  
 ];
 
-// ============================================================================
-// SUB-COMPONENTS
-// ============================================================================
 
 const Navbar = () => {
   const navLinks = [
@@ -111,7 +103,7 @@ const Navbar = () => {
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-chart-5 to-amber-500 flex items-center justify-center">
             <Radar className="w-4 h-4 text-white" />
           </div>
-          <span className="font-serif">Orbit</span>
+          <span className="font-serif">Campus</span>
         </a>
 
         {/* Nav Links (Desktop) */}

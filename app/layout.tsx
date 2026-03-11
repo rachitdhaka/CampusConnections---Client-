@@ -11,8 +11,18 @@ import {
 } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
-
 import { Toaster } from "@/components/ui/sonner";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_APP_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://campusconnection.vercel.app");
+
+const ogImagePath = "/ogimage.png";
+const siteName = "Campus Connection";
+const siteDescription =
+  "CampusConnection helps friends reconnect and stay in touch after graduation.";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,9 +37,15 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "CampusConnection",
-  description:
-    "CampusConnection helps friends reconnect and stay in touch after graduation.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteName,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  alternates: {
+    canonical: "/",
+  },
   keywords: [
     "CampusConnection",
     "friends",
@@ -39,30 +55,32 @@ export const metadata: Metadata = {
     "social network",
     "community",
   ],
-  authors: [{ name: "CampusConnection Team" }],
+  authors: [{ name: "CampusConnection Team", url: siteUrl }],
   creator: "CampusConnection Team",
   openGraph: {
-    title: "CampusConnection",
+    title: siteName,
     description:
       "Reconnect with friends after graduation and grow your alumni network.",
     type: "website",
     locale: "en_US",
-    siteName: "CampusConnection",
+    url: "/",
+    siteName,
     images: [
       {
-        url: "/bg.webp",
+        url: ogImagePath,
         width: 1200,
         height: 630,
         alt: "CampusConnection - Alumni Network Map",
+        type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "CampusConnection",
+    title: siteName,
     description:
       "Reconnect with friends after graduation and grow your alumni network.",
-    images: ["/bg.webp"],
+    images: [ogImagePath],
   },
 };
 

@@ -50,49 +50,62 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+const EMPTY_FORM_VALUES: FormValues = {
+  company: "",
+  role: "",
+  area: "",
+  city: "",
+  contact: "",
+  college: "",
+  batch: "",
+};
+
 export default function UpdateProfilePage() {
   const router = useRouter();
   const { user, isLoaded } = useUser();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [initialValues, setInitialValues] =
+    React.useState<FormValues>(EMPTY_FORM_VALUES);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      company: "",
-      role: "",
-      area: "",
-      city: "",
-      contact: "",
-      college: "",
-      batch: "",
-    },
+    defaultValues: EMPTY_FORM_VALUES,
   });
 
   // Fetch existing user data
   React.useEffect(() => {
     async function fetchUserData() {
-      if (!user?.primaryEmailAddress?.emailAddress) return;
+      if (!user?.primaryEmailAddress?.emailAddress) {
+        setIsLoading(false);
+        return;
+      }
 
       try {
+        const encodedEmail = encodeURIComponent(
+          user.primaryEmailAddress.emailAddress,
+        );
         const response = await axios.get(
-          `https://server-campus-connections.onrender.com/user/profile/${user.primaryEmailAddress.emailAddress}`,
+          `https://server-campus-connections.onrender.com/user/profile?email=${encodedEmail}`,
         );
 
-        if (response.data) {
-          const userData = response.data;
-          form.reset({
-            company: userData.company || "",
-            role: userData.role || "",
-            area: userData.area || "",
-            city: userData.city || "",
-            contact: userData.contact || "",
-            college: userData.college || "",
-            batch: userData.batch || "",
-          });
-        }
+        const userData = response.data?.user ?? response.data ?? {};
+        const prefilledValues: FormValues = {
+          company: userData.company || "",
+          role: userData.role || "",
+          area: userData.area || "",
+          city: userData.city || "",
+          contact: userData.contact || "",
+          college: userData.college || "",
+          batch: userData.batch || "",
+        };
+
+        setInitialValues(prefilledValues);
+        form.reset(prefilledValues);
       } catch (error) {
         console.log("No existing profile found or error fetching:", error);
+        setInitialValues(EMPTY_FORM_VALUES);
+        form.reset(EMPTY_FORM_VALUES);
       } finally {
         setIsLoading(false);
       }
@@ -172,7 +185,7 @@ export default function UpdateProfilePage() {
           </CardHeader>
           <CardContent className="flex justify-center">
             <Button asChild>
-              <Link href="/login">Sign In</Link>
+              <Link href="/sign-in">Sign In</Link>
             </Button>
           </CardContent>
         </Card>
@@ -184,7 +197,7 @@ export default function UpdateProfilePage() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 py-8 px-4 sm:px-6 lg:px-8">
       {/* Header Section */}
       <div className="flex justify-end items-center backdrop-blur-sm   w-fit p-2 rounded-full border border-neutral-200 dark:border-neutral-700 ">
-        <AnimatedThemeToggler />    
+        <AnimatedThemeToggler />
       </div>
       <div className="max-w-4xl mx-auto mb-8">
         <Button
@@ -419,7 +432,7 @@ export default function UpdateProfilePage() {
               <Button
                 type="button"
                 variant="secondary"
-                onClick={() => form.reset()}
+                onClick={() => form.reset(initialValues)}
                 className="min-h-[44px] w-full sm:w-auto"
                 disabled={isSubmitting}
               >

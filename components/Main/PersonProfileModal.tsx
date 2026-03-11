@@ -154,20 +154,26 @@ export default function PersonProfileModal({
                   value={person.college}
                 />
                 {person.email && (
-                  <InfoRow
-                    icon={<Mail size={16} />}
-                    label="Email"
-                    value={person.email}
-                    href={`mailto:${person.email}`}
-                  />
+                  <>
+                    <div className="my-3" />
+                    <InfoRow
+                      icon={<Mail size={16} />}
+                      label="Email"
+                      value={person.email}
+                      href={`mailto:${person.email}`}
+                    />
+                  </>
                 )}
                 {person.contact && (
-                  <InfoRow
-                    icon={<Phone size={16} />}
-                    label="Contact"
-                    value={person.contact}
-                    href={`tel:${person.contact}`}
-                  />
+                  <>
+                    <div className="my-3" />
+                    <InfoRow
+                      icon={<Phone size={16} />}
+                      label="Contact"
+                      value={person.contact}
+                      href={`tel:${person.contact}`}
+                    />
+                  </>
                 )}
               </div>
 

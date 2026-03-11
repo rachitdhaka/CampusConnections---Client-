@@ -103,7 +103,7 @@ const Navbar = () => {
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-chart-5 to-amber-500 flex items-center justify-center">
             <Radar className="w-4 h-4 text-white" />
           </div>
-          <span className="font-serif">Campus</span>
+          <span className="font-serif">Campus Connections</span>
         </a>
 
         {/* Nav Links (Desktop) */}
@@ -200,7 +200,7 @@ const HeroSection = () => {
           >
             <a
               href="/dashboard"
-              className="group flex items-center gap-2 px-7 py-3.5 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium text-sm hover:scale-105 transition-transform duration-300 shadow-xl shadow-neutral-900/20 dark:shadow-white/20"
+              className="group flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium text-sm hover:scale-100 transition-transform duration-300 shadow-xl shadow-neutral-900/20 dark:shadow-white/20"
             >
               <MapPin className="w-4 h-4" />
               Drop your pin
@@ -438,7 +438,7 @@ const GlobeSection = () => {
             </p>
             <a
               href="/dashboard"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium text-sm hover:scale-105 transition-transform duration-300"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium text-sm hover:scale-100 transition-transform duration-300"
             >
               Join the network
               <ArrowRight className="w-4 h-4" />
@@ -507,7 +507,7 @@ const Footer = () => {
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-chart-5 to-amber-500 flex items-center justify-center">
               <Radar className="w-4 h-4 text-white" />
             </div>
-            <span className="font-serif">Orbit</span>
+            <span className="font-serif">Campus Connections</span>
           </div>
 
           {/* Links */}
@@ -533,7 +533,7 @@ const Footer = () => {
           </div>
 
           {/* Social */}
-          <div className="flex items-center gap-4">
+          {/* <div className="flex items-center gap-4">
             <a
               href="#"
               className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
@@ -546,11 +546,11 @@ const Footer = () => {
             >
               <Github className="w-4 h-4 text-neutral-500 dark:text-neutral-500" />
             </a>
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-8 pt-6 border-t border-neutral-200/50 dark:border-neutral-800/50 text-center text-sm text-neutral-500 dark:text-neutral-500">
-          © {new Date().getFullYear()} Orbit. Crafted with{" "}
+          © {new Date().getFullYear()} Campus Connections. Crafted with{" "}
           <span className="text-chart-5">♥</span> for the scattered.
         </div>
       </div>

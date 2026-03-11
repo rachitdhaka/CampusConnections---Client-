@@ -1,20 +1,23 @@
-import ProfileCard from "./Card";
+import ProfileCardsList from "./Card";
 import pfp from "@/public/dp.png";
 import Image from "next/image";
+import { userAgent } from "next/server";
 export default function ContentSideBar() {
   return (
     <div className="h-full w-2xl flex flex-col bg-card justify-start gap-4 border border-border items-center rounded-xl p-2 pt-4 overflow-y-scroll shadow-sm">
-      <ContentHeader />
-      <ProfileCard />
+      {/* <ContentHeader /> */}
+      <ProfileCardsList />
     </div>
   );
 }
 
 export function ContentHeader() {
+
   return (
-    <div>
-      <p className="font-bold text-xl ">Campus Connection</p>
+    <div className="flex gap-2">
+    
     </div>
+    
   );
 }
 

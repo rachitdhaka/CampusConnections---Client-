@@ -1,9 +1,10 @@
 "use client";
 import pfp from "@/public/user.png";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import PersonProfileModal from "./PersonProfileModal";
+import { motion } from "motion/react";
 
 interface Person {
   name: string;
@@ -17,11 +18,14 @@ interface Person {
   contact?: string;
 }
 
-export default function ProfileCard() {
+export default function ProfileCardsList() {
   const [userData, setUserData] = useState<Person[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortBy, setSortBy] = useState<
+    "batch" | "city" | "college" | "name" | null
+  >(null);
 
   const handleCardClick = (user: Person) => {
     setSelectedPerson(user);
@@ -34,6 +38,17 @@ export default function ProfileCard() {
     setTimeout(() => setSelectedPerson(null), 200);
   };
 
+  const handleSort = (filterType: "batch" | "city" | "college" | "name") => {
+    setSortBy(filterType);
+  };
+
+  const sortedData = useMemo(() => {
+    if (!userData) return [];
+    if (!sortBy) return userData;
+
+    return [...userData].sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+  }, [userData, sortBy]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,7 +57,7 @@ export default function ProfileCard() {
           "https://server-campus-connections.onrender.com/user/dashboard",
         );
         setUserData(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         setUserData(null);
       } finally {
@@ -53,6 +68,7 @@ export default function ProfileCard() {
     fetchData();
   }, []);
 
+  // this is the skeleton which is a loading animation
   if (isLoading) {
     return (
       <div className="w-full h-fit flex flex-col gap-3 p-2 rounded-xl">
@@ -75,35 +91,87 @@ export default function ProfileCard() {
   return (
     <>
       <div className="w-full h-fit flex flex-col gap-2 p-2 rounded-xl">
-        {userData &&
-          userData.map((user: Person, index: number) => (
-            <div
-              key={index}
-              onClick={() => handleCardClick(user)}
-              className="flex flex-col border border-border rounded-xl bg-card hover:bg-muted/50 p-3 gap-2 transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
-            >
-              <div className="flex gap-4 justify-start items-center">
-                <div className="size-10 rounded-full overflow-hidden bg-muted">
-                  <Image src={user.image || pfp} alt={user.name} />
-                </div>
-                <div>
-                  <p className="font-semibold text-sm text-foreground">
-                    {user.name}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {user.role} @ {user.company}
-                  </p>
-                </div>
-              </div>
+        {/* filtering buttons of sorting  */}
+        <div className="flex gap-2 justify-center mb-5">
+          <button
+            onClick={() => handleSort("batch")}
+            className={`p-1 rounded border text-sm cursor-pointer transition-all ${
+              sortBy === "batch"
+                ? "bg-accent border-accent font-semibold dark:text-chart-5"
+                : "bg-accent"
+            }`}
+          >
+            Batch
+          </button>
+          <button
+            onClick={() => handleSort("name")}
+            className={`p-1 rounded border text-sm cursor-pointer transition-all ${
+              sortBy === "name"
+                ? "bg-accent border-accent font-semibold dark:text-chart-5"
+                : "bg-accent"
+            }`}
+          >
+            Name
+          </button>
+          <button
+            onClick={() => handleSort("city")}
+            className={`p-1 rounded border text-sm cursor-pointer transition-all ${
+              sortBy === "city"
+                ? "bg-accent border-accent font-semibold dark:text-chart-5"
+                : "bg-accent"
+            }`}
+          >
+            Location
+          </button>
+          <button
+            onClick={() => handleSort("college")}
+            className={`p-1 rounded border text-sm cursor-pointer transition-all ${
+              sortBy === "college"
+                ? "bg-accent border-accent font-semibold dark:text-chart-5"
+                : "bg-accent"
+            }`}
+          >
+            College
+          </button>
+        </div>
 
-              {/* Bio  */}
-              <div className="flex flex-wrap gap-2">
-                <DisplayTag>📍 {user.city}</DisplayTag>
-                <DisplayTag>🎓 {user.batch}</DisplayTag>
-                <DisplayTag>🏫 {user.college}</DisplayTag>
+        {sortedData.map((user: Person, index: number) => (
+          <motion.div
+            key={user.email ?? index}
+            layout
+            layoutId={user.email}
+            transition={{
+              layout: {
+                type: "tween",
+                duration: 0.35,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              },
+            }}
+            onClick={() => handleCardClick(user)}
+            className="flex flex-col  border border-border rounded-xl bg-card hover:bg-muted/50 p-3 gap-2 transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+          >
+            <motion.div className="flex gap-4 justify-start  items-center">
+              <div className="size-10 rounded-full overflow-hidden bg-muted">
+                <Image src={user.image || pfp} alt={user.name} />
               </div>
+              <div>
+                <p className="font-semibold text-sm text-foreground">
+                  {user.name}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {user.role} @ {user.company}
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Bio  */}
+            <div className="flex flex-wrap gap-2">
+              <DisplayTag>📍 {user.city}</DisplayTag>
+              <DisplayTag>🎓 {user.batch}</DisplayTag>
+              <DisplayTag>🏫 {user.college}</DisplayTag>
             </div>
-          ))}
+          </motion.div>
+        ))}
       </div>
 
       {/* Person Profile Modal */}

@@ -102,7 +102,7 @@ export default function Sidebar() {
         >
           <Sparkles className="w-5 h-5 text-amber-600 dark:text-amber-400" />
         </div>
-        <span
+        <a
           className={`
           font-serif-italic text-lg
           text-foreground
@@ -111,9 +111,11 @@ export default function Sidebar() {
           overflow-hidden whitespace-nowrap
           ${isCollapsed ? "w-0 opacity-0" : "hidden lg:block w-auto opacity-100"}
         `}
+        href="/"
+            
         >
-          Campus
-        </span>
+          Campus Connection
+        </a>
       </div>
 
       {/* Navigation Links */}

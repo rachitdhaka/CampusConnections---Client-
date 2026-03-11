@@ -22,6 +22,10 @@ const siteUrl =
 
 const defaultOgImagePath = "/ogimage.png";
 const whatsappOgImagePath = "/whatsappOG.png";
+const defaultOgImageWidth = 1616;
+const defaultOgImageHeight = 848;
+const whatsappOgImageWidth = 1058;
+const whatsappOgImageHeight = 554;
 const siteName = "Campus Connection";
 const siteDescription =
   "CampusConnection helps friends reconnect and stay in touch after graduation.";
@@ -45,9 +49,21 @@ const instrumentSerif = Instrument_Serif({
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
   const userAgent = requestHeaders.get("user-agent") ?? "";
-  const openGraphImagePath = isWhatsAppCrawler(userAgent)
-    ? whatsappOgImagePath
-    : defaultOgImagePath;
+  const openGraphImage = isWhatsAppCrawler(userAgent)
+    ? {
+        url: whatsappOgImagePath,
+        width: whatsappOgImageWidth,
+        height: whatsappOgImageHeight,
+        alt: "CampusConnection - Alumni Network Map",
+        type: "image/png",
+      }
+    : {
+        url: defaultOgImagePath,
+        width: defaultOgImageWidth,
+        height: defaultOgImageHeight,
+        alt: "CampusConnection - Alumni Network Map",
+        type: "image/png",
+      };
 
   return {
     metadataBase: new URL(siteUrl),
@@ -78,15 +94,7 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "en_US",
       url: "/",
       siteName,
-      images: [
-        {
-          url: openGraphImagePath,
-          width: 1200,
-          height: 630,
-          alt: "CampusConnection - Alumni Network Map",
-          type: "image/png",
-        },
-      ],
+      images: [openGraphImage],
     },
     twitter: {
       card: "summary_large_image",

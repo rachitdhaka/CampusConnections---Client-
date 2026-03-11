@@ -5,16 +5,21 @@ import DashboardMobileView from "@/components/Mobile/DashboardMobileView";
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Globe } from "@/components/ui/globe";
+import { AnimatedThemeToggler } from "../../components/ui/animated-theme-toggler";
 
 export default function Page() {
   return (
     <>
+    
       {/* Show sign-in/sign-up UI when user is not logged in */}
       <SignedOut>
+        
         <div className="flex flex-col h-screen w-screen justify-center items-center gap-4 bg-background relative overflow-hidden">
           {/* Card */}
+          <AnimatedThemeToggler />
 
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 p-6 md:p-10 rounded-3xl border border-neutral-200/50 dark:border-neutral-800/50 bg-white/30 dark:bg-neutral-900/30 backdrop-blur-sm">
+                      
             <div className="flex-1 text-center md:text-left">
               <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
                 <br />

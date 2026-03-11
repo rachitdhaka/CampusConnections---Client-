@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import {
   ClerkProvider,
@@ -19,10 +20,15 @@ const siteUrl =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "https://campusconnection.vercel.app");
 
-const ogImagePath = "/ogimage.png";
+const defaultOgImagePath = "/ogimage.png";
+const whatsappOgImagePath = "/whatsappOG.png";
 const siteName = "Campus Connection";
 const siteDescription =
   "CampusConnection helps friends reconnect and stay in touch after graduation.";
+
+function isWhatsAppCrawler(userAgent: string) {
+  return userAgent.toLowerCase().includes("whatsapp");
+}
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,53 +42,61 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: siteName,
-    template: `%s | ${siteName}`,
-  },
-  description: siteDescription,
-  alternates: {
-    canonical: "/",
-  },
-  keywords: [
-    "CampusConnection",
-    "friends",
-    "alumni",
-    "reconnect",
-    "graduation",
-    "social network",
-    "community",
-  ],
-  authors: [{ name: "CampusConnection Team", url: siteUrl }],
-  creator: "CampusConnection Team",
-  openGraph: {
-    title: siteName,
-    description:
-      "Reconnect with friends after graduation and grow your alumni network.",
-    type: "website",
-    locale: "en_US",
-    url: "/",
-    siteName,
-    images: [
-      {
-        url: ogImagePath,
-        width: 1200,
-        height: 630,
-        alt: "CampusConnection - Alumni Network Map",
-        type: "image/png",
-      },
+export async function generateMetadata(): Promise<Metadata> {
+  const requestHeaders = await headers();
+  const userAgent = requestHeaders.get("user-agent") ?? "";
+  const openGraphImagePath = isWhatsAppCrawler(userAgent)
+    ? whatsappOgImagePath
+    : defaultOgImagePath;
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: siteName,
+      template: `%s | ${siteName}`,
+    },
+    description: siteDescription,
+    alternates: {
+      canonical: "/",
+    },
+    keywords: [
+      "CampusConnection",
+      "friends",
+      "alumni",
+      "reconnect",
+      "graduation",
+      "social network",
+      "community",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteName,
-    description:
-      "Reconnect with friends after graduation and grow your alumni network.",
-    images: [ogImagePath],
-  },
-};
+    authors: [{ name: "CampusConnection Team", url: siteUrl }],
+    creator: "CampusConnection Team",
+    openGraph: {
+      title: siteName,
+      description:
+        "Reconnect with friends after graduation and grow your alumni network.",
+      type: "website",
+      locale: "en_US",
+      url: "/",
+      siteName,
+      images: [
+        {
+          url: openGraphImagePath,
+          width: 1200,
+          height: 630,
+          alt: "CampusConnection - Alumni Network Map",
+          type: "image/png",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description:
+        "Reconnect with friends after graduation and grow your alumni network.",
+      images: [defaultOgImagePath],
+    },
+  };
+}
 
 export default function RootLayout({
   children,

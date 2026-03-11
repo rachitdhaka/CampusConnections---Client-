@@ -42,7 +42,7 @@ const formSchema = z.object({
   role: z.string().min(2, "Role must be at least 2 characters."),
   area: z.string().min(2, "Area must be at least 2 characters."),
   city: z.string().min(2, "City must be at least 2 characters."),
-  contact: z.string().min(10, "Contact number must be at least 10 characters."),
+  contact: z.string().min(10, "Contact number must be at least 10 characters.").optional().or(z.literal("")),
   college: z.string().min(2, "College name must be at least 2 characters."),
   batch: z.string().min(1, "Batch is required."),
 });
@@ -297,7 +297,7 @@ export default function CompleteInformationPage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="max-w-md">
-                    <FieldLabel>Phone Number</FieldLabel>
+                    <FieldLabel>Phone Number (Optional)</FieldLabel>
                     <Input
                       {...field}
                       placeholder="e.g., +91 9876543210"

@@ -185,7 +185,7 @@ const HeroSection = () => {
             
             className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            Orbit replaces the noise of social feeds with a{" "}
+            Campus replaces the noise of social feeds with a{" "}
             <span className="text-neutral-900 dark:text-white font-medium">
               live geospatial radar
             </span>

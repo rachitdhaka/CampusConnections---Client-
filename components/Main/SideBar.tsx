@@ -104,7 +104,7 @@ export default function Sidebar() {
         </div>
         <a
           className={`
-          font-serif-italic text-lg
+          font-serif text-lg
           text-foreground
           tracking-tight
           transition-all duration-300

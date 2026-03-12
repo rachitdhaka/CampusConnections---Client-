@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import pfp from "@/public/user.png";
 import Image from "next/image";
 import PersonProfileModal from "@/components/Main/PersonProfileModal";
@@ -22,12 +22,22 @@ interface ProfileCardMobileProps {
   isLoading: boolean;
 }
 
+type SortField = "name" | "college" | "batch" | "city";
+
+const SORT_OPTIONS: { label: string; value: SortField }[] = [
+  { label: "Name", value: "name" },
+  { label: "College", value: "college" },
+  { label: "Batch", value: "batch" },
+  { label: "Location", value: "city" },
+];
+
 export default function ProfileCardMobile({
   userData,
   isLoading,
 }: ProfileCardMobileProps) {
   const [selectedPerson, setSelectedPerson] = useState<UserData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortBy, setSortBy] = useState<SortField | null>(null);
 
   const handleCardClick = (user: UserData) => {
     setSelectedPerson(user);
@@ -39,6 +49,25 @@ export default function ProfileCardMobile({
     // Delay clearing selected person for exit animation
     setTimeout(() => setSelectedPerson(null), 200);
   };
+
+  const sortedUsers = useMemo(() => {
+    if (!userData) {
+      return [];
+    }
+
+    if (!sortBy) {
+      return userData;
+    }
+
+    const collator = new Intl.Collator(undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+
+    return [...userData].sort((left, right) =>
+      collator.compare(left[sortBy].trim(), right[sortBy].trim()),
+    );
+  }, [sortBy, userData]);
 
   if (isLoading) {
     return (
@@ -83,7 +112,34 @@ export default function ProfileCardMobile({
   return (
     <>
       <div className="flex flex-col gap-3">
-        {userData.map((user, index) => (
+        <div className="rounded-2xl border border-border/60 bg-muted/30 p-3">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Sort Alumni By
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {SORT_OPTIONS.map((option) => {
+              const isActive = sortBy === option.value;
+
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setSortBy(option.value)}
+                  aria-pressed={isActive}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                    isActive
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-background text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {sortedUsers.map((user, index) => (
           <div
             key={user._id || index}
             onClick={() => handleCardClick(user)}
@@ -91,7 +147,7 @@ export default function ProfileCardMobile({
           >
             {/* User Info Row */}
             <div className="flex gap-3 items-center">
-              <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-muted">
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-muted">
                 <Image
                   src={user.image || pfp}
                   alt={user.name}
@@ -116,7 +172,7 @@ export default function ProfileCardMobile({
               <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted">
                 🎓 {user.batch}
               </span>
-              <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted truncate max-w-[150px]">
+              <span className="max-w-37.5 truncate rounded-full bg-muted px-3 py-1.5 text-xs font-medium">
                 🏫 {user.college}
               </span>
             </div>

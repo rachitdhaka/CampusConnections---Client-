@@ -10,6 +10,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { Button } from "../ui/button";
+import { Radar } from "lucide-react";
 
 export default function MobileNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,32 +51,14 @@ export default function MobileNavbar() {
 
         {/* Center - Logo */}
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <svg
-              className="w-4 h-4 text-primary-foreground"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
+           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-chart-5 to-amber-500 flex items-center justify-center">
+            <Radar className="w-4 h-4 text-white" />
           </div>
-          <span className="font-semibold text-lg">Campus Connect</span>
+          <span className="font-semibold text-lg font-serif">Campus Connection</span>
         </div>
 
         {/* Right - User/Theme - relative positioning contains the popover */}
-        <div className="flex items-center gap-1 relative">
+        <div className="flex justify-center items-center gap-4 relative">
           <AnimatedThemeToggler />
           <SignedIn>
             <div className="relative">

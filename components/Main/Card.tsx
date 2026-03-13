@@ -58,7 +58,7 @@ export default function ProfileCardsList() {
     const slowTimer = setTimeout(() => setSlowLoad(true), 5000);
     try {
       const response = await axios.get(
-        "kfk",
+        "https://server-campus-connections.onrender.com/user/dashboard",
         { timeout: 65000 },
       );
       setUserData(response.data);

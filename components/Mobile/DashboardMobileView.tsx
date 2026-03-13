@@ -55,29 +55,39 @@ interface PlaceProperties {
 export default function DashboardMobileView() {
   const [usersData, setUsersData] = useState<UserData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [slowLoad, setSlowLoad] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedPoint, setSelectedPoint] = useState<{
     coordinates: [number, number];
     properties: PlaceProperties;
   } | null>(null);
 
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    setIsError(false);
+    setSlowLoad(false);
+    const slowTimer = setTimeout(() => setSlowLoad(true), 5000);
+    try {
+      const response = await axios.get(
+        "https://server-campus-connections.onrender.com/user/dashboard",
+        { timeout: 65000 },
+      );
+      setUsersData(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setIsError(true);
+    } finally {
+      clearTimeout(slowTimer);
+      setIsLoading(false);
+      setSlowLoad(false);
+    }
+  };
+
   // Fetch users from API
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get(
-          "https://server-campus-connections.onrender.com/user/dashboard",
-        );
-        setUsersData(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Group users by exact coordinates and convert to GeoJSON
@@ -133,7 +143,33 @@ export default function DashboardMobileView() {
         <MobileNavbar />
 
         {/* Full-screen Map - pb-20 ensures controls are visible above the floating button */}
-        <div className="h-full w-full pt-14 pb-20">
+        <div className="relative h-full w-full pt-14 pb-20">
+          {(isLoading || isError) && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/80 gap-3">
+              {isLoading ? (
+                <>
+                  <div className="w-8 h-8 border-4 border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
+                  {slowLoad && (
+                    <p className="text-xs text-muted-foreground">
+                      Server is starting up, please wait…
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-muted-foreground text-center px-4">
+                    Could not load map data. Server may be starting up.
+                  </p>
+                  <button
+                    onClick={fetchUsers}
+                    className="px-4 py-2 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium hover:opacity-80 transition-opacity"
+                  >
+                    Retry
+                  </button>
+                </>
+              )}
+            </div>
+          )}
           <Map center={[78.9629, 20.5937]} zoom={4} fadeDuration={0}>
             <MapClickHandler onMapClick={() => setSelectedPoint(null)} />
 

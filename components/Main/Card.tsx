@@ -21,6 +21,8 @@ interface Person {
 export default function ProfileCardsList() {
   const [userData, setUserData] = useState<Person[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [slowLoad, setSlowLoad] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortBy, setSortBy] = useState<
@@ -49,29 +51,41 @@ export default function ProfileCardsList() {
     return [...userData].sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
   }, [userData, sortBy]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get(
-          "https://server-campus-connections.onrender.com/user/dashboard",
-        );
-        setUserData(response.data);
-        // console.log(response.data);
-      } catch (error) {
-        setUserData(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    setIsLoading(true);
+    setIsError(false);
+    setSlowLoad(false);
+    const slowTimer = setTimeout(() => setSlowLoad(true), 5000);
+    try {
+      const response = await axios.get(
+        "kfk",
+        { timeout: 65000 },
+      );
+      setUserData(response.data);
+    } catch {
+      setIsError(true);
+      setUserData(null);
+    } finally {
+      clearTimeout(slowTimer);
+      setIsLoading(false);
+      setSlowLoad(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // this is the skeleton which is a loading animation
   if (isLoading) {
     return (
       <div className="w-full h-fit flex flex-col gap-3 p-2 rounded-xl">
+        {slowLoad && (
+          <p className="text-xs text-center text-muted-foreground px-2 pb-1">
+            Server is starting up, please wait…
+          </p>
+        )}
         {[1, 2, 3].map((i) => (
           <div
             key={i}
@@ -84,6 +98,22 @@ export default function ProfileCardsList() {
             </div>
           </div>
         ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center gap-3 p-6 text-center">
+        <p className="text-sm text-muted-foreground">
+          Could not reach the server. It may be starting up.
+        </p>
+        <button
+          onClick={fetchData}
+          className="px-4 py-2 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium hover:opacity-80 transition-opacity"
+        >
+          Retry
+        </button>
       </div>
     );
   }
